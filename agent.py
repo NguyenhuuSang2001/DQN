@@ -28,6 +28,9 @@ class DQNAgent:
             return self.env.action_space.sample()
 
         return action
+    
+    def get_device(self):
+        return self.device
 
     def compute_loss(self, batch):
         states, actions, rewards, next_states, dones = batch

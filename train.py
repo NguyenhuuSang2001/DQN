@@ -17,9 +17,10 @@ def mini_batch_train(env, agent, max_episodes, max_steps, batch_size):
                 agent.update(batch_size)   
 
             if done or step == max_steps-1:
-                episode_reward = test_env(agent.model, env, agent.device)
+                episode_reward = test_env(agent.model, env, agent.get_device())
                 episode_rewards.append(episode_reward)
-                print("Episode " + str(episode) + ": " + str(episode_reward))
+                print( str(episode) + ", " + str(episode_reward))
+                # print("Episode " + str(episode) + ": " + str(episode_reward))
                 break
 
             state = next_state
@@ -29,8 +30,7 @@ def mini_batch_train(env, agent, max_episodes, max_steps, batch_size):
 def test_env(model, env, device='cpu', vis=False):
     rewards = []
 
-    i = 0
-    while i < 5:
+    for i in range(10):
         state, _ = env.reset()
         if vis: env.render()
         done = False
@@ -46,7 +46,6 @@ def test_env(model, env, device='cpu', vis=False):
             if vis: env.render()
             total_reward += reward
         rewards.append(total_reward)
-        i += 1    
        
     r_avg = np.mean(rewards)
 
