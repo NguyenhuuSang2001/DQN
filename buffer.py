@@ -27,11 +27,11 @@ class BasicBuffer:
             next_state_batch.append(next_state)
             done_batch.append(done)
 
-        state_batch = np.array(state_batch)
-        action_batch = np.array(action_batch)
-        reward_batch = np.array(reward_batch)
-        next_state_batch = np.array(next_state_batch)
-        done_batch = np.array(done_batch)
+        # state_batch = np.array(state_batch)
+        # action_batch = np.array(action_batch)
+        # reward_batch = np.array(reward_batch)
+        # next_state_batch = np.array(next_state_batch)
+        # done_batch = np.array(done_batch)
 
         return (state_batch, action_batch, reward_batch, next_state_batch, done_batch)
 
@@ -58,7 +58,7 @@ class BasicBuffer:
         reward_batch = np.array(reward_batch)
         next_state_batch = np.array(next_state_batch)
         done_batch = np.array(done_batch)
-        
+
         return (state_batch, action_batch, reward_batch, next_state_batch, done_batch)
 
     def __len__(self):

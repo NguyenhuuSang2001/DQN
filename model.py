@@ -7,18 +7,14 @@ class DQN(nn.Module):
         self.input_dim = input_dim
         self.output_dim = output_dim
         
-        self.fc_input = nn.Linear(self.input_dim, 128)
-        self.fc_hidden = nn.Linear(128, 256)
-        self.fc_output = nn.Linear(256, self.output_dim)
+        self.fc = nn.Sequential(
+            nn.Linear(self.input_dim[0], 128),
+            nn.ReLU(),
+            nn.Linear(128, 256),
+            nn.ReLU(),
+            nn.Linear(256, self.output_dim)
+        )
 
     def forward(self, state):
-        x = self.fc_input(state)
-        x = F.relu(x)
-
-        x = self.fc_hidden(x)
-        x = F.relu(x)
-        
-        y = self.fc_output(x)
-        y = F.relu(y)
-
-        return y
+        predict = self.fc(state)
+        return predict
