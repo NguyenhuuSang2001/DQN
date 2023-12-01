@@ -4,11 +4,12 @@ from buffer import BasicBuffer
 
 class DQNAgent:
 
-    def __init__(self, env, learning_rate=3e-4, gamma=0.99, buffer_size=10000, lr=0.01):
+    def __init__(self, env, learning_rate=3e-4, gamma=0.99, buffer_size=10000, lr=0.01, eps=0.997):
         self.env = env
         self.learning_rate = learning_rate
         self.gamma = gamma
         self.replay_buffer = BasicBuffer(max_size=buffer_size)
+        self.eps = eps
 
         self.device = "cpu"
         if torch.cuda.is_available():
@@ -19,14 +20,15 @@ class DQNAgent:
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
         self.MSE_loss = nn.MSELoss()
 
-    def get_action(self, state, eps=0.10):
+    def get_action(self, state, epsilon_decay=0.997):
+        self.eps *= epsilon_decay
+        if(np.random.random() < self.eps):
+            return self.env.action_space.sample()
+        
         state = torch.FloatTensor(state).float().unsqueeze(0).to(self.device)
         qvals = self.model.forward(state)
         action = np.argmax(qvals.cpu().detach().numpy())
         
-        if(np.random.random() < eps):
-            return self.env.action_space.sample()
-
         return action
     
     def get_device(self):
@@ -45,7 +47,6 @@ class DQNAgent:
         next_Q = self.model.forward(next_states)
         max_next_Q = torch.max(next_Q, 1)[0]
         expected_Q = rewards.squeeze(1) + self.gamma * max_next_Q
-
         loss = self.MSE_loss(curr_Q, expected_Q)
         return loss
 
