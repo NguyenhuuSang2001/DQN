@@ -4,7 +4,7 @@ from buffer import BasicBuffer
 
 class DQNAgent:
 
-    def __init__(self, env, learning_rate=1e-5, gamma=0.99, buffer_size=10000, lr=0.01, eps=0.997):
+    def __init__(self, env, learning_rate=3e-4, gamma=0.99, buffer_size=10000, lr=0.01, eps=0.997):
         self.env = env
         self.learning_rate = learning_rate
         self.gamma = gamma
@@ -53,7 +53,7 @@ class DQNAgent:
         return loss
 
     def update(self, batch_size):
-        batch = self.replay_buffer.sample(batch_size)
+        batch = self.replay_buffer.sample_sequence(batch_size)
         loss = self.compute_loss(batch)
 
         self.optimizer.zero_grad()

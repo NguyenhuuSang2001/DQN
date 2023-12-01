@@ -1,16 +1,22 @@
 from agent import DQNAgent
 from train import mini_batch_train
 # from env import env_example
-
-import gym
+from transmit_data_env import IoTCommunicationEnv
+# import gym
 
 MAX_EPISODES = 500
 MAX_STEPS = 500
 BATCH_SIZE = 256
 
-env_id = "CartPole-v0"
+# env_id = "CartPole-v0"
 
-env = gym.make(env_id)
+num_user = 4
+number_power = 3
+max_power = 0.0316227766
+max_channel = 3
+
+env = IoTCommunicationEnv(num_user, number_power, max_power, max_channel)
+# env = gym.make(env_id)
 # env = env_example(3, 2, 3)
 # env.seed(1)
 
